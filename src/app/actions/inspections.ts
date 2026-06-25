@@ -20,7 +20,7 @@ export async function createInspection(data: InspectionFormData) {
     throw new Error('Datos de inspección inválidos.')
   }
 
-  const { cameras, ...rest } = validated.data
+  const { cameras, photos, ...rest } = validated.data
 
   const inspection = await prisma.inspection.create({
     data: {
@@ -65,6 +65,13 @@ export async function createInspection(data: InspectionFormData) {
           notes: cam.notes || null,
         })),
       },
+      photos: {
+        create: photos.map((pic) => ({
+          url: pic.url,
+          category: pic.category,
+          caption: pic.caption || null,
+        })),
+      },
     },
   })
 
@@ -99,10 +106,13 @@ export async function updateInspection(id: string, data: InspectionFormData) {
     throw new Error('Datos de inspección inválidos.')
   }
 
-  const { cameras, ...rest } = validated.data
+  const { cameras, photos, ...rest } = validated.data
 
   await prisma.$transaction([
     prisma.cameraRequirement.deleteMany({
+      where: { inspectionId: id },
+    }),
+    prisma.uploadedPhoto.deleteMany({
       where: { inspectionId: id },
     }),
     prisma.inspection.update({
@@ -144,6 +154,13 @@ export async function updateInspection(id: string, data: InspectionFormData) {
           create: cameras.map((cam) => ({
             position: cam.position,
             notes: cam.notes || null,
+          })),
+        },
+        photos: {
+          create: photos.map((pic) => ({
+            url: pic.url,
+            category: pic.category,
+            caption: pic.caption || null,
           })),
         },
       },

@@ -53,7 +53,8 @@ export default async function InspectionDetailPage(props: {
       client: true,
       technician: true,
       cameras: true,
-      signature: true
+      signature: true,
+      photos: true
     }
   })
 
@@ -451,6 +452,46 @@ export default async function InspectionDetailPage(props: {
               </div>
             )}
           </div>
+
+          {/* Galería de Evidencia Fotográfica */}
+          {inspection.photos && inspection.photos.length > 0 && (
+            <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 shadow-xs space-y-4 print:break-inside-avoid">
+              <h2 className="text-base font-bold text-neutral-850 dark:text-white border-b border-neutral-100 dark:border-neutral-850 pb-3 flex items-center gap-2">
+                <Smartphone className="h-5 w-5 text-blue-600" />
+                Evidencia Fotográfica de Terreno
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 print:grid-cols-3 print:gap-3">
+                {inspection.photos.map((pic) => (
+                  <div 
+                    key={pic.id} 
+                    className="border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden bg-neutral-50/20 dark:bg-neutral-950/15 flex flex-col justify-between"
+                  >
+                    <div className="aspect-video w-full overflow-hidden bg-neutral-100 border-b border-neutral-200 dark:border-neutral-800 relative">
+                      <img 
+                        src={pic.url} 
+                        alt={pic.caption || pic.category || 'Foto'} 
+                        className="h-full w-full object-cover hover:scale-105 transition-transform duration-200"
+                      />
+                    </div>
+                    <div className="p-3 space-y-1">
+                      <span className="text-[9px] font-bold uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/25 text-indigo-650 dark:text-indigo-400 px-2 py-0.5 rounded">
+                        {pic.category === 'fachada' ? 'Fachada / Exterior' : 
+                         pic.category === 'camara' ? 'Ubicación Cámara' : 
+                         pic.category === 'punto_red' ? 'Punto de Red' : 
+                         pic.category === 'punto_electrico' ? 'Alimentación Eléctrica' : 
+                         pic.category === 'obstaculo' ? 'Obstáculo' : pic.category || 'Foto'}
+                      </span>
+                      {pic.caption && (
+                        <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1 pl-1 line-clamp-2">
+                          {pic.caption}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Signature Preview */}
           {inspection.signature && inspection.signature.length > 0 && (

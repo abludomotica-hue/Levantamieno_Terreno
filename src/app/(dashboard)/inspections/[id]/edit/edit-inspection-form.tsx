@@ -37,6 +37,7 @@ const STEPS = [
   { title: 'Cámaras', icon: Video },
   { title: 'Equipamiento', icon: HardDrive },
   { title: 'Propuesta', icon: Activity },
+  { title: 'Fotos', icon: Smartphone },
   { title: 'Cierre', icon: FileText }
 ]
 
@@ -92,6 +93,11 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
         position: c.position,
         notes: c.notes || '',
       })) || [],
+      photos: inspection.photos?.map((p: any) => ({
+        url: p.url,
+        category: p.category || 'camara',
+        caption: p.caption || '',
+      })) || [],
     },
   })
 
@@ -99,6 +105,63 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
     control,
     name: 'cameras',
   })
+
+  const { fields: photoFields, append: appendPhoto, remove: removePhoto } = useFieldArray({
+    control,
+    name: 'photos',
+  })
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length === 0) return
+
+    if (photoFields.length + files.length > 10) {
+      toast.error('Puedes subir un máximo de 10 fotos.')
+      return
+    }
+
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        const img = new Image()
+        img.onload = () => {
+          const canvas = document.createElement('canvas')
+          let width = img.width
+          let height = img.height
+
+          const MAX_WIDTH = 800
+          const MAX_HEIGHT = 600
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width
+              width = MAX_WIDTH
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height
+              height = MAX_HEIGHT
+            }
+          }
+
+          canvas.width = width
+          canvas.height = height
+          const ctx = canvas.getContext('2d')
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, width, height)
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7)
+            appendPhoto({
+              url: compressedBase64,
+              category: 'camara',
+              caption: ''
+            })
+          }
+        }
+        img.src = event.target?.result as string
+      }
+      reader.readAsDataURL(file)
+    })
+  }
 
   // Watch fields for conditional logic
   const selectedClientId = watch('clientId')
@@ -696,11 +759,102 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
             </div>
           )}
 
-          {/* STEP 6: STATUS & CLOSING */}
+          {/* STEP 6: PHOTO REGISTRY (NUEVO) */}
           {currentStep === 5 && (
             <div className="space-y-6 animate-fade-in">
+              <div className="border-b border-neutral-100 dark:border-neutral-850 pb-3 flex justify-between items-center">
+                <h2 className="text-lg font-bold text-neutral-900 dark:text-white">
+                  6. Registro Fotográfico de Terreno
+                </h2>
+                <span className="text-xs font-semibold text-neutral-450 dark:text-neutral-500 bg-neutral-100 dark:bg-neutral-800 px-2.5 py-1 rounded-lg">
+                  {photoFields.length} / 10 fotos
+                </span>
+              </div>
+
+              <div className="space-y-4">
+                <p className="text-xs text-neutral-500 dark:text-neutral-450">
+                  Sube fotografías del lugar como evidencia técnica de conectividad, fachada, puntos eléctricos o instalación de cámaras. En dispositivos móviles, puedes presionar el botón para abrir la cámara trasera de tu teléfono de forma directa. (Límite: 10 fotos).
+                </p>
+
+                {photoFields.length < 10 && (
+                  <label className="flex flex-col items-center justify-center border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl p-8 hover:bg-neutral-50 dark:hover:bg-neutral-950/20 cursor-pointer transition-colors text-center relative group">
+                    <Smartphone className="h-8 w-8 text-neutral-400 group-hover:text-indigo-650 transition-colors mb-2" />
+                    <span className="text-xs font-bold text-neutral-700 dark:text-neutral-200">Tomar o subir foto</span>
+                    <span className="text-[10px] text-neutral-400 mt-1">Formatos permitidos: JPG, PNG (máx. 10 fotos)</span>
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      capture="environment"
+                      multiple
+                      onChange={handlePhotoUpload} 
+                      className="hidden" 
+                    />
+                  </label>
+                )}
+
+                {photoFields.length > 0 && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    {photoFields.map((field, index) => (
+                      <div 
+                        key={field.id} 
+                        className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-neutral-50/20 dark:bg-neutral-950/10 flex gap-4 items-start relative hover:border-neutral-350 dark:hover:border-neutral-750 transition-all"
+                      >
+                        <div className="h-20 w-20 rounded-xl overflow-hidden bg-neutral-100 border border-neutral-200 dark:border-neutral-800 shrink-0 relative">
+                          <img 
+                            src={(field as any).url} 
+                            alt={`Preview ${index + 1}`} 
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+
+                        <div className="flex-1 space-y-2">
+                          <div className="space-y-1">
+                            <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block">Categoría *</label>
+                            <select
+                              {...register(`photos.${index}.category` as const)}
+                              className="w-full px-2.5 py-1.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-xs"
+                            >
+                              <option value="fachada">Fachada / Exterior</option>
+                              <option value="camara">Ubicación de Cámara</option>
+                              <option value="punto_red">Punto de Red / Router</option>
+                              <option value="punto_electrico">Alimentación Eléctrica</option>
+                              <option value="obstaculo">Obstáculo / Zona Crítica</option>
+                              <option value="otro">Otro</option>
+                            </select>
+                          </div>
+                          
+                          <div className="space-y-1">
+                            <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block">Leyenda (Opcional)</label>
+                            <input 
+                              type="text"
+                              placeholder="Ej: Router principal del cliente"
+                              {...register(`photos.${index}.caption` as const)}
+                              className="w-full px-2.5 py-1.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-xs"
+                            />
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => removePhoto(index)}
+                          className="p-1.5 border border-neutral-200 dark:border-neutral-800 hover:bg-red-50 dark:hover:bg-red-950/20 text-neutral-500 hover:text-red-650 rounded-lg shrink-0 transition-colors cursor-pointer self-start"
+                          title="Eliminar foto"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* STEP 7: STATUS & CLOSING */}
+          {currentStep === 6 && (
+            <div className="space-y-6 animate-fade-in">
               <h2 className="text-lg font-bold text-neutral-900 dark:text-white border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                6. Cierre de Visita y Aceptación
+                7. Cierre de Visita y Aceptación
               </h2>
               <div className="space-y-2">
                 <label htmlFor="status" className="text-xs font-bold uppercase tracking-wider text-neutral-400">Estado Final del Registro</label>

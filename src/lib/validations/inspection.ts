@@ -60,6 +60,13 @@ export const inspectionSchema = z.object({
   recommendedSystem: z.string().optional().nullable(),
   estimatedInstallTime: z.string().optional().nullable(),
   
+  // Fotos de terreno
+  photos: z.array(z.object({
+    url: z.string().min(1, 'La imagen es requerida'),
+    category: z.string().min(1, 'La categoría es requerida'),
+    caption: z.string().optional().nullable()
+  })).max(10, 'Puedes subir hasta 10 fotos en total'),
+
   // Cámaras requeridas (Sección 4)
   cameras: z.array(z.object({
     position: z.string().min(1, 'La ubicación es requerida'),
