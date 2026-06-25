@@ -1,0 +1,190 @@
+// ============================================================================
+// Levantamiento Terreno - Prisma Schema
+// Ablutech © 2026
+// ============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================================
+// User - Usuarios del sistema (técnicos, supervisores, administradores)
+// ============================================================================
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("TECHNICIAN") // ADMIN | TECHNICIAN | SUPERVISOR
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  inspections Inspection[] @relation("TechnicianInspections")
+}
+
+// ============================================================================
+// Client - Clientes que solicitan inspecciones
+// ============================================================================
+model Client {
+  id        String   @id @default(uuid())
+  name      String
+  address   String
+  phone     String
+  email     String?
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  inspections Inspection[]
+}
+
+// ============================================================================
+// Inspection - Levantamiento / Inspección de terreno (15 secciones)
+// ============================================================================
+model Inspection {
+  id           String   @id @default(uuid())
+  clientId     String
+  technicianId String
+  status       String   @default("DRAFT") // DRAFT | IN_PROGRESS | COMPLETED
+  visitDate    DateTime @default(now())
+
+  // --- Sección: Ubicación GPS ---
+  latitude  Float?
+  longitude Float?
+
+  // --- Sección: Objetivos del cliente ---
+  // JSON array: ["seguridad","mascotas","vehiculos","accesos","encomiendas","robos"]
+  customerObjectives String @default("[]")
+
+  // --- Sección: Tipo de propiedad ---
+  propertyType     String @default("casa") // casa | condominio | parcela | comercial
+  floors           Int    @default(1)
+  installationType String @default("wifi") // wifi | cableada | mixta
+
+  // --- Sección: Internet existente ---
+  internetFiber         Boolean @default(false)
+  internetRouter        Boolean @default(false)
+  internetWifiGood      Boolean @default(false)
+  internetNeedsRepeater Boolean @default(false)
+
+  // --- Sección: Punto eléctrico ---
+  electricNearbyOutlet Boolean @default(false)
+  electricNeedsPoint   Boolean @default(false)
+  electricNeedsConduit Boolean @default(false)
+
+  // --- Sección: Distancias (metros) ---
+  distanceNvrRouter  Float?
+  distanceCamera1    Float?
+  distanceCamera2    Float?
+  distanceCamera3    Float?
+  distanceCamera4    Float?
+  distanceTotalCable Float?
+
+  // --- Sección: Grabación ---
+  // JSON: tipo de grabación seleccionado
+  recordingType    String  @default("[]")
+  recordingDiskSize String?
+
+  // --- Sección: Acceso remoto ---
+  // JSON array: plataformas seleccionadas
+  remoteAccessPlatforms String @default("[]")
+  remoteAccessUsers     Int?
+
+  // --- Sección: Equipamiento adicional ---
+  // JSON array: equipos adicionales requeridos
+  additionalEquipment      String  @default("[]")
+  additionalEquipmentNotes String?
+
+  // --- Sección: Venta cruzada ---
+  // JSON array: items de venta cruzada
+  crossSellItems String @default("[]")
+
+  // --- Sección: Riesgos detectados ---
+  // JSON array: riesgos identificados en terreno
+  risksDetected String @default("[]")
+
+  // --- Sección: Observaciones y recomendaciones ---
+  observations       String?
+  recommendedSystem  String?
+  estimatedInstallTime String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // --- Relaciones ---
+  client     Client  @relation(fields: [clientId], references: [id])
+  technician User    @relation("TechnicianInspections", fields: [technicianId], references: [id])
+
+  cameras   CameraRequirement[]
+  photos    UploadedPhoto[]
+  signature Signature[]
+  reports   GeneratedReport[]
+
+  @@index([clientId])
+  @@index([technicianId])
+  @@index([status])
+  @@index([visitDate])
+}
+
+// ============================================================================
+// CameraRequirement - Cámaras requeridas por inspección
+// ============================================================================
+model CameraRequirement {
+  id           String  @id @default(uuid())
+  inspectionId String
+  position     String  // Descripción de la ubicación de la cámara
+  notes        String?
+
+  inspection Inspection @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+
+  @@index([inspectionId])
+}
+
+// ============================================================================
+// UploadedPhoto - Fotos subidas durante la inspección
+// ============================================================================
+model UploadedPhoto {
+  id           String   @id @default(uuid())
+  inspectionId String
+  url          String
+  category     String?  // Ej: "fachada", "interior", "punto_electrico"
+  caption      String?
+  createdAt    DateTime @default(now())
+
+  inspection Inspection @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+
+  @@index([inspectionId])
+}
+
+// ============================================================================
+// Signature - Firma digital del cliente
+// ============================================================================
+model Signature {
+  id           String   @id @default(uuid())
+  inspectionId String
+  dataUrl      String   // Base64 data URL de la firma
+  signerName   String?
+  createdAt    DateTime @default(now())
+
+  inspection Inspection @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+
+  @@index([inspectionId])
+}
+
+// ============================================================================
+// GeneratedReport - Informes PDF generados
+// ============================================================================
+model GeneratedReport {
+  id           String   @id @default(uuid())
+  inspectionId String
+  fileUrl      String
+  generatedAt  DateTime @default(now())
+
+  inspection Inspection @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+
+  @@index([inspectionId])
+}
