@@ -224,7 +224,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                 >
                   <div className={`h-8 w-8 rounded-lg flex items-center justify-center transition-all ${
                     isActive 
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-accent text-white'
                       : isCompleted
                         ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400'
                         : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500'
@@ -233,7 +233,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                   </div>
                   <div>
                     <p className={`text-[10px] font-bold uppercase tracking-wider ${
-                      isActive ? 'text-blue-600 dark:text-blue-500' : 'text-neutral-400'
+                      isActive ? 'text-accent dark:text-accent' : 'text-neutral-400'
                     }`}>
                       Paso {idx + 1}
                     </p>
@@ -274,7 +274,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                   <select
                     id="clientId"
                     {...register('clientId')}
-                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
                   >
                     {clients.map(c => (
                       <option key={c.id} value={c.id}>{c.name}</option>
@@ -290,7 +290,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                     id="visitDate"
                     type="date"
                     {...register('visitDate', { valueAsDate: true })}
-                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
                   />
                 </div>
               </div>
@@ -317,9 +317,9 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                     className="flex items-center gap-2 px-4.5 py-2.5 border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer disabled:opacity-50"
                   >
                     {gpsLoading ? (
-                      <Loader2 className="animate-spin h-4.5 w-4.5 text-blue-600" />
+                      <Loader2 className="animate-spin h-4.5 w-4.5 text-accent" />
                     ) : (
-                      <MapPin className="h-4.5 w-4.5 text-blue-600" />
+                      <MapPin className="h-4.5 w-4.5 text-accent" />
                     )}
                     Actualizar Ubicación GPS
                   </button>
@@ -342,7 +342,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                       key={obj.id}
                       className={`flex items-center gap-3 p-3.5 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-neutral-50 dark:hover:bg-neutral-950/25 ${
                         watchObjectives.includes(obj.id)
-                          ? 'border-blue-500 bg-blue-50/20 dark:bg-blue-950/5 text-blue-600 dark:text-blue-400 font-bold'
+                          ? 'border-accent bg-accent-soft/20 dark:bg-accent-soft/5 text-accent dark:text-blue-400 font-bold'
                           : 'border-neutral-200 dark:border-neutral-800 text-neutral-700'
                       }`}
                     >
@@ -350,7 +350,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                         type="checkbox"
                         checked={watchObjectives.includes(obj.id)}
                         onChange={(e) => handleCheckboxChange('customerObjectives', obj.id, e.target.checked)}
-                        className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-4.5 w-4.5"
+                        className="rounded border-neutral-300 text-accent focus:ring-accent h-4.5 w-4.5"
                       />
                       <span className="text-xs">{obj.label}</span>
                     </label>
@@ -375,7 +375,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                   <select
                     id="propertyType"
                     {...register('propertyType')}
-                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
                   >
                     {PROPERTY_TYPES.map(opt => (
                       <option key={opt.id} value={opt.id}>{opt.label}</option>
@@ -390,7 +390,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                   <select
                     id="floors"
                     {...register('floors', { valueAsNumber: true })}
-                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
                   >
                     <option value={1}>1</option>
                     <option value={2}>2</option>
@@ -405,7 +405,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                   <select
                     id="installationType"
                     {...register('installationType')}
-                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
                   >
                     {INSTALLATION_TYPES.map(opt => (
                       <option key={opt.id} value={opt.id}>{opt.label}</option>
@@ -420,19 +420,19 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <label className="flex items-center justify-between p-3.5 border border-neutral-200 dark:border-neutral-800 rounded-xl cursor-pointer hover:bg-neutral-50">
                     <span className="text-xs font-semibold text-neutral-705 dark:text-neutral-350">Posee Fibra Óptica</span>
-                    <input type="checkbox" {...register('internetFiber')} className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5" />
+                    <input type="checkbox" {...register('internetFiber')} className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5" />
                   </label>
                   <label className="flex items-center justify-between p-3.5 border border-neutral-200 dark:border-neutral-800 rounded-xl cursor-pointer hover:bg-neutral-50">
                     <span className="text-xs font-semibold text-neutral-705 dark:text-neutral-350">Router es accesible</span>
-                    <input type="checkbox" {...register('internetRouter')} className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5" />
+                    <input type="checkbox" {...register('internetRouter')} className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5" />
                   </label>
                   <label className="flex items-center justify-between p-3.5 border border-neutral-200 dark:border-neutral-800 rounded-xl cursor-pointer hover:bg-neutral-50">
                     <span className="text-xs font-semibold text-neutral-705 dark:text-neutral-350">Calidad de Wi-Fi aceptable</span>
-                    <input type="checkbox" {...register('internetWifiGood')} className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5" />
+                    <input type="checkbox" {...register('internetWifiGood')} className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5" />
                   </label>
                   <label className="flex items-center justify-between p-3.5 border border-neutral-200 dark:border-neutral-800 rounded-xl cursor-pointer hover:bg-neutral-50">
                     <span className="text-xs font-semibold text-neutral-705 dark:text-neutral-350">Requiere repetidor de señal</span>
-                    <input type="checkbox" {...register('internetNeedsRepeater')} className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5" />
+                    <input type="checkbox" {...register('internetNeedsRepeater')} className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5" />
                   </label>
                 </div>
               </div>
@@ -443,15 +443,15 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <label className="flex items-center justify-between p-3.5 border border-neutral-200 dark:border-neutral-800 rounded-xl cursor-pointer hover:bg-neutral-50">
                     <span className="text-xs font-semibold text-neutral-705 dark:text-neutral-350">Tomacorriente cercano</span>
-                    <input type="checkbox" {...register('electricNearbyOutlet')} className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5" />
+                    <input type="checkbox" {...register('electricNearbyOutlet')} className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5" />
                   </label>
                   <label className="flex items-center justify-between p-3.5 border border-neutral-200 dark:border-neutral-800 rounded-xl cursor-pointer hover:bg-neutral-50">
                     <span className="text-xs font-semibold text-neutral-705 dark:text-neutral-350">Requiere punto nuevo</span>
-                    <input type="checkbox" {...register('electricNeedsPoint')} className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5" />
+                    <input type="checkbox" {...register('electricNeedsPoint')} className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5" />
                   </label>
                   <label className="flex items-center justify-between p-3.5 border border-neutral-200 dark:border-neutral-800 rounded-xl cursor-pointer hover:bg-neutral-50">
                     <span className="text-xs font-semibold text-neutral-705 dark:text-neutral-350">Requiere canalización</span>
-                    <input type="checkbox" {...register('electricNeedsConduit')} className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5" />
+                    <input type="checkbox" {...register('electricNeedsConduit')} className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5" />
                   </label>
                 </div>
               </div>
@@ -466,7 +466,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                 <button
                   type="button"
                   onClick={() => appendCamera({ position: 'porton', notes: '' })}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-550 shadow-xs cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-white rounded-lg text-xs font-semibold hover:bg-accent-hover shadow-xs cursor-pointer"
                 >
                   <Plus className="h-4 w-4" />
                   Agregar Cámara
@@ -556,11 +556,11 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                       <label 
                         key={opt.id}
                         className={`flex-1 flex items-center justify-between p-4 border rounded-xl cursor-pointer ${
-                          watchRecordingType.includes(opt.id) ? 'border-blue-500 text-blue-600 dark:text-blue-400 font-bold' : 'border-neutral-200 dark:border-neutral-800'
+                          watchRecordingType.includes(opt.id) ? 'border-accent text-accent dark:text-blue-400 font-bold' : 'border-neutral-200 dark:border-neutral-800'
                         }`}
                       >
                         <span className="text-xs">{opt.label}</span>
-                        <input type="checkbox" checked={watchRecordingType.includes(opt.id)} onChange={(e) => handleCheckboxChange('recordingType', opt.id, e.target.checked)} className="rounded text-blue-600 h-4.5 w-4.5" />
+                        <input type="checkbox" checked={watchRecordingType.includes(opt.id)} onChange={(e) => handleCheckboxChange('recordingType', opt.id, e.target.checked)} className="rounded text-accent h-4.5 w-4.5" />
                       </label>
                     ))}
                   </div>
@@ -587,11 +587,11 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                       <label 
                         key={opt.id}
                         className={`flex-1 flex items-center justify-between p-4 border rounded-xl cursor-pointer ${
-                          watchPlatforms.includes(opt.id) ? 'border-blue-500 text-blue-600 dark:text-blue-400 font-bold' : 'border-neutral-200 dark:border-neutral-800'
+                          watchPlatforms.includes(opt.id) ? 'border-accent text-accent dark:text-blue-400 font-bold' : 'border-neutral-200 dark:border-neutral-800'
                         }`}
                       >
                         <span className="text-xs">{opt.label}</span>
-                        <input type="checkbox" checked={watchPlatforms.includes(opt.id)} onChange={(e) => handleCheckboxChange('remoteAccessPlatforms', opt.id, e.target.checked)} className="rounded text-blue-600 h-4.5 w-4.5" />
+                        <input type="checkbox" checked={watchPlatforms.includes(opt.id)} onChange={(e) => handleCheckboxChange('remoteAccessPlatforms', opt.id, e.target.checked)} className="rounded text-accent h-4.5 w-4.5" />
                       </label>
                     ))}
                   </div>
@@ -611,11 +611,11 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                     <label 
                       key={eq.id}
                       className={`flex flex-col justify-between p-3 border rounded-xl cursor-pointer transition-all ${
-                        watchEquipment.includes(eq.id) ? 'border-blue-500 bg-blue-50/20 dark:bg-blue-950/5 text-blue-600 dark:text-blue-400 font-bold' : 'border-neutral-200 dark:border-neutral-800 text-neutral-600'
+                        watchEquipment.includes(eq.id) ? 'border-accent bg-accent-soft/20 dark:bg-accent-soft/5 text-accent dark:text-blue-400 font-bold' : 'border-neutral-200 dark:border-neutral-800 text-neutral-600'
                       }`}
                     >
                       <span className="text-xs mb-2 leading-tight">{eq.label}</span>
-                      <input type="checkbox" checked={watchEquipment.includes(eq.id)} onChange={(e) => handleCheckboxChange('additionalEquipment', eq.id, e.target.checked)} className="rounded text-blue-600 h-4.5 w-4.5 align-self-end mt-auto" />
+                      <input type="checkbox" checked={watchEquipment.includes(eq.id)} onChange={(e) => handleCheckboxChange('additionalEquipment', eq.id, e.target.checked)} className="rounded text-accent h-4.5 w-4.5 align-self-end mt-auto" />
                     </label>
                   ))}
                 </div>
@@ -642,11 +642,11 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
                     <label 
                       key={item.id}
                       className={`flex flex-col justify-between p-3.5 border rounded-xl cursor-pointer transition-all ${
-                        watchCrossSell.includes(item.id) ? 'border-blue-500 bg-blue-50/20 dark:bg-blue-950/5 text-blue-600 dark:text-blue-400 font-bold' : 'border-neutral-200 dark:border-neutral-800 text-neutral-600'
+                        watchCrossSell.includes(item.id) ? 'border-accent bg-accent-soft/20 dark:bg-accent-soft/5 text-accent dark:text-blue-400 font-bold' : 'border-neutral-200 dark:border-neutral-800 text-neutral-600'
                       }`}
                     >
                       <span className="text-xs mb-2 leading-tight">{item.label}</span>
-                      <input type="checkbox" checked={watchCrossSell.includes(item.id)} onChange={(e) => handleCheckboxChange('crossSellItems', item.id, e.target.checked)} className="rounded text-blue-600 h-4.5 w-4.5 align-self-end mt-auto" />
+                      <input type="checkbox" checked={watchCrossSell.includes(item.id)} onChange={(e) => handleCheckboxChange('crossSellItems', item.id, e.target.checked)} className="rounded text-accent h-4.5 w-4.5 align-self-end mt-auto" />
                     </label>
                   ))}
                 </div>
@@ -722,7 +722,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex items-center gap-1.5 px-5 py-2.5 bg-blue-600 hover:bg-blue-505 text-white rounded-xl text-sm font-semibold transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-5 py-2.5 bg-accent hover:bg-accent-hover text-white rounded-xl text-sm font-semibold transition-all cursor-pointer"
               >
                 Siguiente
                 <ArrowRight className="h-4.5 w-4.5" />
@@ -731,7 +731,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex items-center gap-1.5 px-6 py-3 bg-blue-600 hover:bg-blue-505 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-bold shadow-md transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-6 py-3 bg-accent hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-bold shadow-md transition-all cursor-pointer"
               >
                 {isSubmitting ? (
                   <>

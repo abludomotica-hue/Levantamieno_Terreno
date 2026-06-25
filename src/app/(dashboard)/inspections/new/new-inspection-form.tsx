@@ -304,7 +304,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                 >
                   <div className={`h-8 w-8 rounded-lg flex items-center justify-center transition-all ${
                     isActive 
-                      ? 'bg-blue-600 text-white shadow-md shadow-blue-600/10'
+                      ? 'bg-accent text-white shadow-md shadow-accent/10'
                       : isCompleted
                         ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400'
                         : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500'
@@ -313,7 +313,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                   </div>
                   <div>
                     <p className={`text-[10px] font-bold uppercase tracking-wider ${
-                      isActive ? 'text-blue-600 dark:text-blue-500' : 'text-neutral-400'
+                      isActive ? 'text-accent dark:text-accent' : 'text-neutral-400'
                     }`}>
                       Paso {idx + 1}
                     </p>
@@ -355,8 +355,8 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                   <select
                     id="clientId"
                     {...register('clientId')}
-                    className={`w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:border-blue-500 transition-all duration-200 text-neutral-800 dark:text-neutral-100 ${
-                      errors.clientId ? 'border-red-500 focus:ring-red-500/20' : 'border-neutral-200 dark:border-neutral-800 focus:ring-blue-500/50'
+                    className={`w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:border-accent transition-all duration-200 text-neutral-800 dark:text-neutral-100 ${
+                      errors.clientId ? 'border-red-500 focus:ring-red-500/20' : 'border-neutral-200 dark:border-neutral-800 focus:ring-accent/50'
                     }`}
                   >
                     <option value="">-- Seleccione un cliente --</option>
@@ -378,7 +378,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                     id="visitDate"
                     type="date"
                     {...register('visitDate', { valueAsDate: true })}
-                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 text-neutral-800 dark:text-neutral-100"
+                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all duration-200 text-neutral-800 dark:text-neutral-100"
                   />
                 </div>
               </div>
@@ -406,9 +406,9 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                     className="flex items-center gap-2 px-4.5 py-2.5 border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer disabled:opacity-50 text-neutral-850 dark:text-neutral-100"
                   >
                     {gpsLoading ? (
-                      <Loader2 className="animate-spin h-4.5 w-4.5 text-blue-600" />
+                      <Loader2 className="animate-spin h-4.5 w-4.5 text-accent" />
                     ) : (
-                      <MapPin className="h-4.5 w-4.5 text-blue-600" />
+                      <MapPin className="h-4.5 w-4.5 text-accent" />
                     )}
                     Capturar Coordenadas GPS
                   </button>
@@ -431,7 +431,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                       key={obj.id}
                       className={`flex items-center gap-3 p-3.5 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-neutral-50 dark:hover:bg-neutral-950/25 ${
                         watchObjectives.includes(obj.id)
-                          ? 'border-blue-500/80 bg-blue-50/20 dark:bg-blue-950/5 text-blue-600 dark:text-blue-400 font-bold'
+                          ? 'border-accent/80 bg-accent-soft/20 dark:bg-accent-soft/5 text-accent dark:text-blue-400 font-bold'
                           : 'border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-450'
                       }`}
                     >
@@ -439,7 +439,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                         type="checkbox"
                         checked={watchObjectives.includes(obj.id)}
                         onChange={(e) => handleCheckboxChange('customerObjectives', obj.id, e.target.checked)}
-                        className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-4.5 w-4.5"
+                        className="rounded border-neutral-300 text-accent focus:ring-accent h-4.5 w-4.5"
                       />
                       <span className="text-xs">{obj.label}</span>
                     </label>
@@ -465,7 +465,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                   <select
                     id="propertyType"
                     {...register('propertyType')}
-                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 text-neutral-800 dark:text-neutral-100"
+                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all duration-200 text-neutral-800 dark:text-neutral-100"
                   >
                     {PROPERTY_TYPES.map(opt => (
                       <option key={opt.id} value={opt.id}>{opt.label}</option>
@@ -480,7 +480,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                   <select
                     id="floors"
                     {...register('floors', { valueAsNumber: true })}
-                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 text-neutral-800 dark:text-neutral-100"
+                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all duration-200 text-neutral-800 dark:text-neutral-100"
                   >
                     <option value={1}>1</option>
                     <option value={2}>2</option>
@@ -495,7 +495,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                   <select
                     id="installationType"
                     {...register('installationType')}
-                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 text-neutral-800 dark:text-neutral-100"
+                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all duration-200 text-neutral-800 dark:text-neutral-100"
                   >
                     {INSTALLATION_TYPES.map(opt => (
                       <option key={opt.id} value={opt.id}>{opt.label}</option>
@@ -513,7 +513,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                     <input 
                       type="checkbox" 
                       {...register('internetFiber')} 
-                      className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5"
+                      className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5"
                     />
                   </label>
                   <label className="flex items-center justify-between p-3.5 border border-neutral-200 dark:border-neutral-800 rounded-xl cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-950/20">
@@ -521,7 +521,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                     <input 
                       type="checkbox" 
                       {...register('internetRouter')} 
-                      className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5"
+                      className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5"
                     />
                   </label>
                   <label className="flex items-center justify-between p-3.5 border border-neutral-200 dark:border-neutral-800 rounded-xl cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-950/20">
@@ -529,7 +529,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                     <input 
                       type="checkbox" 
                       {...register('internetWifiGood')} 
-                      className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5"
+                      className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5"
                     />
                   </label>
                   <label className="flex items-center justify-between p-3.5 border border-neutral-200 dark:border-neutral-800 rounded-xl cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-950/20">
@@ -537,7 +537,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                     <input 
                       type="checkbox" 
                       {...register('internetNeedsRepeater')} 
-                      className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5"
+                      className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5"
                     />
                   </label>
                 </div>
@@ -552,7 +552,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                     <input 
                       type="checkbox" 
                       {...register('electricNearbyOutlet')} 
-                      className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5"
+                      className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5"
                     />
                   </label>
                   <label className="flex items-center justify-between p-3.5 border border-neutral-200 dark:border-neutral-800 rounded-xl cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-950/20">
@@ -560,7 +560,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                     <input 
                       type="checkbox" 
                       {...register('electricNeedsPoint')} 
-                      className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5"
+                      className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5"
                     />
                   </label>
                   <label className="flex items-center justify-between p-3.5 border border-neutral-200 dark:border-neutral-800 rounded-xl cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-950/20">
@@ -568,7 +568,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                     <input 
                       type="checkbox" 
                       {...register('electricNeedsConduit')} 
-                      className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-5 w-5"
+                      className="rounded border-neutral-300 text-accent focus:ring-accent h-5 w-5"
                     />
                   </label>
                 </div>
@@ -584,7 +584,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                 <button
                   type="button"
                   onClick={() => appendCamera({ position: 'porton', notes: '' })}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-550 shadow-xs cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-white rounded-lg text-xs font-semibold hover:bg-accent-hover shadow-xs cursor-pointer"
                 >
                   <Plus className="h-4 w-4" />
                   Agregar Cámara
@@ -599,7 +599,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                   <button
                     type="button"
                     onClick={() => appendCamera({ position: 'porton', notes: '' })}
-                    className="mt-3 text-xs font-bold text-blue-600 hover:underline"
+                    className="mt-3 text-xs font-bold text-accent hover:underline"
                   >
                     Agregar la primera cámara
                   </button>
@@ -622,7 +622,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                           </label>
                           <select
                             {...register(`cameras.${index}.position` as const)}
-                            className="w-full px-3 py-2.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            className="w-full px-3 py-2.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-accent"
                           >
                             {CAMERA_POSITIONS.map(pos => (
                               <option key={pos.id} value={pos.id}>{pos.label}</option>
@@ -637,7 +637,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                             type="text"
                             placeholder="Ej: Instalar sobre altura de portón, requiere soporte metálico."
                             {...register(`cameras.${index}.notes` as const)}
-                            className="w-full px-3 py-2.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            className="w-full px-3 py-2.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-accent"
                           />
                         </div>
                       </div>
@@ -670,7 +670,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                       step="0.1"
                       placeholder="Ej: 5.5"
                       {...register('distanceNvrRouter', { valueAsNumber: true })}
-                      className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                      className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />
                   </div>
 
@@ -684,7 +684,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                       step="0.5"
                       placeholder="Ej: 120"
                       {...register('distanceTotalCable', { valueAsNumber: true })}
-                      className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                      className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />
                   </div>
                 </div>
@@ -692,19 +692,19 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Cámara 1 a Switch/NVR</label>
-                    <input type="number" {...register('distanceCamera1', { valueAsNumber: true })} className="w-full p-2.5 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs focus:ring-1 focus:ring-blue-500" />
+                    <input type="number" {...register('distanceCamera1', { valueAsNumber: true })} className="w-full p-2.5 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs focus:ring-1 focus:ring-accent" />
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Cámara 2 a Switch/NVR</label>
-                    <input type="number" {...register('distanceCamera2', { valueAsNumber: true })} className="w-full p-2.5 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs focus:ring-1 focus:ring-blue-500" />
+                    <input type="number" {...register('distanceCamera2', { valueAsNumber: true })} className="w-full p-2.5 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs focus:ring-1 focus:ring-accent" />
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Cámara 3 a Switch/NVR</label>
-                    <input type="number" {...register('distanceCamera3', { valueAsNumber: true })} className="w-full p-2.5 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs focus:ring-1 focus:ring-blue-500" />
+                    <input type="number" {...register('distanceCamera3', { valueAsNumber: true })} className="w-full p-2.5 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs focus:ring-1 focus:ring-accent" />
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Cámara 4 a Switch/NVR</label>
-                    <input type="number" {...register('distanceCamera4', { valueAsNumber: true })} className="w-full p-2.5 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs focus:ring-1 focus:ring-blue-500" />
+                    <input type="number" {...register('distanceCamera4', { valueAsNumber: true })} className="w-full p-2.5 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs focus:ring-1 focus:ring-accent" />
                   </div>
                 </div>
               </div>
@@ -730,7 +730,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                         key={opt.id}
                         className={`flex-1 flex items-center justify-between p-4 border rounded-xl cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-950/20 ${
                           watchRecordingType.includes(opt.id)
-                            ? 'border-blue-500 text-blue-600 dark:text-blue-400 font-bold'
+                            ? 'border-accent text-accent dark:text-blue-400 font-bold'
                             : 'border-neutral-200 dark:border-neutral-800'
                         }`}
                       >
@@ -739,7 +739,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                           type="checkbox"
                           checked={watchRecordingType.includes(opt.id)}
                           onChange={(e) => handleCheckboxChange('recordingType', opt.id, e.target.checked)}
-                          className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-4.5 w-4.5"
+                          className="rounded border-neutral-300 text-accent focus:ring-accent h-4.5 w-4.5"
                         />
                       </label>
                     ))}
@@ -755,7 +755,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                     <select
                       id="recordingDiskSize"
                       {...register('recordingDiskSize')}
-                      className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 text-neutral-800 dark:text-neutral-100"
+                      className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all duration-200 text-neutral-800 dark:text-neutral-100"
                     >
                       {DISK_SIZES.map(opt => (
                         <option key={opt.id} value={opt.id}>{opt.label}</option>
@@ -777,7 +777,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                         key={opt.id}
                         className={`flex-1 flex items-center justify-between p-4 border rounded-xl cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-950/20 ${
                           watchPlatforms.includes(opt.id)
-                            ? 'border-blue-500 text-blue-600 dark:text-blue-400 font-bold'
+                            ? 'border-accent text-accent dark:text-blue-400 font-bold'
                             : 'border-neutral-200 dark:border-neutral-800'
                         }`}
                       >
@@ -786,7 +786,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                           type="checkbox"
                           checked={watchPlatforms.includes(opt.id)}
                           onChange={(e) => handleCheckboxChange('remoteAccessPlatforms', opt.id, e.target.checked)}
-                          className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-4.5 w-4.5"
+                          className="rounded border-neutral-300 text-accent focus:ring-accent h-4.5 w-4.5"
                         />
                       </label>
                     ))}
@@ -802,7 +802,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                     type="number"
                     min={1}
                     {...register('remoteAccessUsers', { valueAsNumber: true })}
-                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
                   />
                 </div>
               </div>
@@ -818,7 +818,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                       key={eq.id}
                       className={`flex flex-col justify-between p-3 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-neutral-50 dark:hover:bg-neutral-950/25 ${
                         watchEquipment.includes(eq.id)
-                          ? 'border-blue-500/80 bg-blue-50/20 dark:bg-blue-950/5 text-blue-600 dark:text-blue-400 font-bold'
+                          ? 'border-accent/80 bg-accent-soft/20 dark:bg-accent-soft/5 text-accent dark:text-blue-400 font-bold'
                           : 'border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-450'
                       }`}
                     >
@@ -827,7 +827,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                         type="checkbox"
                         checked={watchEquipment.includes(eq.id)}
                         onChange={(e) => handleCheckboxChange('additionalEquipment', eq.id, e.target.checked)}
-                        className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-4.5 w-4.5 align-self-end mt-auto"
+                        className="rounded border-neutral-300 text-accent focus:ring-accent h-4.5 w-4.5 align-self-end mt-auto"
                       />
                     </label>
                   ))}
@@ -842,7 +842,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                     rows={2}
                     placeholder="Detalles sobre rack, UPS, o canalizaciones especiales..."
                     {...register('additionalEquipmentNotes')}
-                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 text-neutral-800 dark:text-neutral-100 placeholder-neutral-550 dark:placeholder-neutral-600 resize-none"
+                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all duration-200 text-neutral-800 dark:text-neutral-100 placeholder-neutral-550 dark:placeholder-neutral-600 resize-none"
                   />
                 </div>
               </div>
@@ -867,7 +867,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                       key={item.id}
                       className={`flex flex-col justify-between p-3.5 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-neutral-50 dark:hover:bg-neutral-950/25 ${
                         watchCrossSell.includes(item.id)
-                          ? 'border-blue-500/80 bg-blue-50/20 dark:bg-blue-950/5 text-blue-600 dark:text-blue-400 font-bold'
+                          ? 'border-accent/80 bg-accent-soft/20 dark:bg-accent-soft/5 text-accent dark:text-blue-400 font-bold'
                           : 'border-neutral-200 dark:border-neutral-800 text-neutral-600'
                       }`}
                     >
@@ -876,7 +876,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                         type="checkbox"
                         checked={watchCrossSell.includes(item.id)}
                         onChange={(e) => handleCheckboxChange('crossSellItems', item.id, e.target.checked)}
-                        className="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 h-4.5 w-4.5 align-self-end mt-auto"
+                        className="rounded border-neutral-300 text-accent focus:ring-accent h-4.5 w-4.5 align-self-end mt-auto"
                       />
                     </label>
                   ))}
@@ -923,7 +923,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                       type="text"
                       placeholder="Ej: Kit de 4 Cámaras IP PoE con NVR de 2TB + UPS"
                       {...register('recommendedSystem')}
-                      className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                      className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />
                   </div>
 
@@ -937,7 +937,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                         type="text"
                         placeholder="Ej: 1 Día (6-8 Horas)"
                         {...register('estimatedInstallTime')}
-                        className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                        className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
                       />
                     </div>
                   </div>
@@ -951,7 +951,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                       rows={3}
                       placeholder="Comentarios adicionales, restricciones físicas de la propiedad..."
                       {...register('observations')}
-                      className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 text-neutral-800 dark:text-neutral-100 resize-none"
+                      className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all duration-200 text-neutral-800 dark:text-neutral-100 resize-none"
                     />
                   </div>
                 </div>
@@ -1008,7 +1008,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
                 <select
                   id="status"
                   {...register('status')}
-                  className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 text-neutral-800 dark:text-neutral-100"
+                  className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all duration-200 text-neutral-800 dark:text-neutral-100"
                 >
                   <option value="DRAFT">Borrador (Permite seguir editando)</option>
                   <option value="COMPLETED">Completada (Cierra el levantamiento)</option>
@@ -1035,7 +1035,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex items-center gap-1.5 px-5 py-2.5 bg-blue-600 hover:bg-blue-505 text-white rounded-xl text-sm font-semibold shadow-md shadow-blue-600/10 transition-all duration-200 cursor-pointer"
+                className="flex items-center gap-1.5 px-5 py-2.5 bg-accent hover:bg-accent-hover text-white rounded-xl text-sm font-semibold shadow-md shadow-accent/10 transition-all duration-200 cursor-pointer"
               >
                 Siguiente
                 <ArrowRight className="h-4.5 w-4.5" />
@@ -1044,7 +1044,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex items-center gap-1.5 px-6 py-3 bg-blue-600 hover:bg-blue-505 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-bold shadow-md shadow-blue-600/15 transition-all duration-200 cursor-pointer"
+                className="flex items-center gap-1.5 px-6 py-3 bg-accent hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-bold shadow-md shadow-accent/15 transition-all duration-200 cursor-pointer"
               >
                 {isSubmitting ? (
                   <>

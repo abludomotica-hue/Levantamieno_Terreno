@@ -90,7 +90,7 @@ export default function EditClientForm({ client }: EditClientFormProps) {
               className={`w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all duration-200 text-neutral-800 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-600 ${
                 errors.name
                   ? 'border-red-500 focus:ring-red-500/20'
-                  : 'border-neutral-200 dark:border-neutral-800 focus:ring-blue-500/50 focus:border-blue-500'
+                  : 'border-neutral-200 dark:border-neutral-800 focus:ring-accent/50 focus:border-accent'
               }`}
             />
             {errors.name && (
@@ -112,7 +112,7 @@ export default function EditClientForm({ client }: EditClientFormProps) {
               className={`w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all duration-200 text-neutral-800 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-600 ${
                 errors.address
                   ? 'border-red-500 focus:ring-red-500/20'
-                  : 'border-neutral-200 dark:border-neutral-800 focus:ring-blue-500/50 focus:border-blue-500'
+                  : 'border-neutral-200 dark:border-neutral-800 focus:ring-accent/50 focus:border-accent'
               }`}
             />
             {errors.address && (
@@ -135,7 +135,7 @@ export default function EditClientForm({ client }: EditClientFormProps) {
                 className={`w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all duration-200 text-neutral-800 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-600 ${
                   errors.phone
                     ? 'border-red-500 focus:ring-red-500/20'
-                    : 'border-neutral-200 dark:border-neutral-800 focus:ring-blue-500/50 focus:border-blue-500'
+                    : 'border-neutral-200 dark:border-neutral-800 focus:ring-accent/50 focus:border-accent'
                 }`}
               />
               {errors.phone && (
@@ -157,7 +157,7 @@ export default function EditClientForm({ client }: EditClientFormProps) {
                 className={`w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all duration-200 text-neutral-800 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-600 ${
                   errors.email
                     ? 'border-red-500 focus:ring-red-500/20'
-                    : 'border-neutral-200 dark:border-neutral-800 focus:ring-blue-500/50 focus:border-blue-500'
+                    : 'border-neutral-200 dark:border-neutral-800 focus:ring-accent/50 focus:border-accent'
                 }`}
               />
               {errors.email && (
@@ -177,7 +177,7 @@ export default function EditClientForm({ client }: EditClientFormProps) {
               rows={4}
               placeholder="Detalles adicionales sobre el cliente..."
               {...register('notes')}
-              className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 text-neutral-800 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-600 resize-none"
+              className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-950/20 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all duration-200 text-neutral-800 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-600 resize-none"
             />
           </div>
 
@@ -192,7 +192,7 @@ export default function EditClientForm({ client }: EditClientFormProps) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-semibold shadow-md shadow-blue-600/10 transition-all duration-200"
+              className="flex items-center gap-2 px-5 py-2.5 bg-accent hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-semibold shadow-md shadow-accent/10 transition-all duration-200"
             >
               {isSubmitting ? (
                 <>
