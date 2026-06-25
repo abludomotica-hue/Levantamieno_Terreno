@@ -18,7 +18,8 @@ import {
   ChevronRight,
   Sparkles,
   Info,
-  Video
+  Video,
+  Calculator
 } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 import { 
@@ -54,7 +55,12 @@ export default async function InspectionDetailPage(props: {
       technician: true,
       cameras: true,
       signature: true,
-      photos: true
+      photos: true,
+      quote: {
+        include: {
+          items: true
+        }
+      }
     }
   })
 
@@ -167,6 +173,50 @@ export default async function InspectionDetailPage(props: {
                 </p>
               </div>
             </div>
+          </div>
+
+          {/* Presupuesto Comercial */}
+          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 shadow-xs space-y-4 print:hidden">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-450 flex items-center gap-1.5">
+              <Calculator className="h-4.5 w-4.5 text-indigo-650" />
+              Presupuesto Comercial
+            </h3>
+            {inspection.quote ? (
+              <div className="space-y-3.5">
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-neutral-500">Monto Neto:</span>
+                    <span className="font-semibold text-neutral-800 dark:text-neutral-250">${inspection.quote.totalAmount.toLocaleString('es-CL')}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-neutral-500">IVA (19%):</span>
+                    <span className="font-semibold text-neutral-800 dark:text-neutral-250">${Math.round(inspection.quote.totalAmount * 0.19).toLocaleString('es-CL')}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm font-bold border-t border-neutral-100 dark:border-neutral-800 pt-2 text-indigo-650">
+                    <span>Total Final:</span>
+                    <span>${Math.round(inspection.quote.totalAmount * 1.19).toLocaleString('es-CL')}</span>
+                  </div>
+                </div>
+                <Link
+                  href={`/inspections/${inspection.id}/quote`}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-neutral-900 hover:bg-neutral-950 dark:bg-white dark:hover:bg-neutral-100 dark:text-neutral-900 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer text-center"
+                >
+                  Ver Presupuesto Comercial
+                </Link>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                  No se ha generado un presupuesto comercial para este levantamiento técnico.
+                </p>
+                <Link
+                  href={`/inspections/${inspection.id}/quote`}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-indigo-650 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer shadow-indigo-600/10 text-center"
+                >
+                  Generar Presupuesto Comercial
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Client Details */}

@@ -14,7 +14,8 @@ import {
   User, 
   ChevronRight,
   ShieldCheck,
-  Calendar
+  Calendar,
+  Package
 } from 'lucide-react'
 import { logoutAction } from '@/app/actions/auth'
 
@@ -24,12 +25,14 @@ const iconMap = {
   Users: Users,
   FileText: FileText,
   Calendar: Calendar,
+  Package: Package,
 }
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Panel', iconName: 'LayoutDashboard' },
   { href: '/schedule', label: 'Agenda', iconName: 'Calendar' },
   { href: '/inspections', label: 'Inspecciones', iconName: 'ClipboardCheck' },
+  { href: '/catalog', label: 'Catálogo', iconName: 'Package' },
   { href: '/clients', label: 'Clientes', iconName: 'Users' },
   { href: '/reports', label: 'Informes', iconName: 'FileText' },
 ] as const
@@ -62,7 +65,7 @@ export default function DashboardLayout({
   return (
     <div className="flex h-screen bg-[#fafafa] dark:bg-[#0a0a0a] text-foreground transition-colors duration-200 overflow-hidden">
       {/* Sidebar for Desktop */}
-      <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 transition-all duration-300">
+      <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 transition-all duration-300 print:hidden">
         {/* Header */}
         <div className="h-16 flex items-center px-6 border-b border-neutral-200 dark:border-neutral-800 gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-white shadow-md shadow-blue-600/20">
@@ -126,7 +129,7 @@ export default function DashboardLayout({
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-full overflow-hidden relative">
         {/* Topbar */}
-        <header className="h-16 flex items-center justify-between px-6 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 md:justify-end z-20">
+        <header className="h-16 flex items-center justify-between px-6 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 md:justify-end z-20 print:hidden">
           {/* Mobile Hamburger Button */}
           <button
             onClick={() => setIsSidebarOpen(true)}
@@ -153,12 +156,12 @@ export default function DashboardLayout({
         </header>
 
         {/* Content Body */}
-        <main className="flex-1 overflow-y-auto px-4 py-6 md:px-8 md:py-8 pb-24 md:pb-8 bg-neutral-50 dark:bg-[#080808]">
+        <main className="flex-1 overflow-y-auto px-4 py-6 md:px-8 md:py-8 pb-24 md:pb-8 bg-neutral-50 dark:bg-[#080808] print:p-0 print:bg-white print:overflow-visible">
           {children}
         </main>
 
         {/* Mobile Bottom Navigation */}
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-xl border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-around px-4 safe-bottom z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-xl border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-around px-4 safe-bottom z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] print:hidden">
           {NAV_ITEMS.map((item) => {
             const Icon = iconMap[item.iconName]
             const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
