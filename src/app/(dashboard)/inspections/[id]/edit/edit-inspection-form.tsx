@@ -183,6 +183,12 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
     }
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === 'Enter' && e.target instanceof HTMLInputElement) {
+      e.preventDefault()
+    }
+  }
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Breadcrumbs / Back button */}
@@ -257,7 +263,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
 
       {/* Main Wizard Form Card */}
       <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-xs overflow-hidden">
-        <form onSubmit={handleSubmit(onSubmit)} className="p-6 md:p-8 space-y-8">
+        <form onSubmit={handleSubmit(onSubmit)} onKeyDown={handleKeyDown} className="p-6 md:p-8 space-y-8">
           
           {/* STEP 1: GENERAL INFO */}
           {currentStep === 0 && (
