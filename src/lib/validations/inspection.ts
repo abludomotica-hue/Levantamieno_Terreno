@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export const inspectionSchema = z.object({
   clientId: z.string().min(1, 'El cliente es requerido'),
+  visitId: z.string().optional().nullable(),
   status: z.enum(['DRAFT', 'IN_PROGRESS', 'COMPLETED']),
   visitDate: z.date(),
   

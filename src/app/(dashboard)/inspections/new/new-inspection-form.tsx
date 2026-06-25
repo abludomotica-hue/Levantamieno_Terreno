@@ -44,6 +44,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const preselectedClientId = searchParams.get('clientId') || ''
+  const visitId = searchParams.get('visitId') || ''
 
   const [currentStep, setCurrentStep] = useState(0)
   const signatureCanvasRef = useRef<HTMLCanvasElement>(null)
@@ -62,6 +63,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
     resolver: zodResolver(inspectionSchema),
     defaultValues: {
       clientId: preselectedClientId,
+      visitId: visitId || null,
       status: 'DRAFT',
       visitDate: new Date(),
       latitude: null,

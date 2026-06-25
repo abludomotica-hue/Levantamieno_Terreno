@@ -13,7 +13,8 @@ import {
   X, 
   User, 
   ChevronRight,
-  ShieldCheck
+  ShieldCheck,
+  Calendar
 } from 'lucide-react'
 import { logoutAction } from '@/app/actions/auth'
 
@@ -22,10 +23,12 @@ const iconMap = {
   ClipboardCheck: ClipboardCheck,
   Users: Users,
   FileText: FileText,
+  Calendar: Calendar,
 }
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Panel', iconName: 'LayoutDashboard' },
+  { href: '/schedule', label: 'Agenda', iconName: 'Calendar' },
   { href: '/inspections', label: 'Inspecciones', iconName: 'ClipboardCheck' },
   { href: '/clients', label: 'Clientes', iconName: 'Users' },
   { href: '/reports', label: 'Informes', iconName: 'FileText' },

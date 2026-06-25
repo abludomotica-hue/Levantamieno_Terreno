@@ -14,17 +14,22 @@ import {
 } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 
+import { getCurrentUser } from '@/lib/auth-utils'
+
 export const dynamic = 'force-dynamic'
 
 export default async function DashboardPage() {
-  // Fetch statistics
+  const user = await getCurrentUser()
+
+  // Fetch statistics and pending visits
   const [
     totalClients,
     totalInspections,
     completedInspections,
     pendingInspections,
     recentInspections,
-    recentClients
+    recentClients,
+    pendingVisits
   ] = await Promise.all([
     prisma.client.count(),
     prisma.inspection.count(),
@@ -38,6 +43,15 @@ export default async function DashboardPage() {
     prisma.client.findMany({
       take: 5,
       orderBy: { createdAt: 'desc' }
+    }),
+    prisma.scheduleVisit.findMany({
+      where: {
+        technicianId: user?.role === 'ADMIN' || user?.role === 'SUPERVISOR' ? undefined : user?.id || '',
+        status: { in: ['PENDING', 'IN_PROGRESS'] }
+      },
+      take: 5,
+      orderBy: { visitDate: 'asc' },
+      include: { client: true, technician: { select: { name: true } } }
     })
   ])
 
@@ -122,6 +136,85 @@ export default async function DashboardPage() {
             </div>
           )
         })}
+      </div>
+
+      {/* Próximas Visitas Técnicas */}
+      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 shadow-xs space-y-4">
+        <div className="flex justify-between items-center pb-2">
+          <h2 className="text-lg font-extrabold flex items-center gap-2 tracking-tight text-neutral-900 dark:text-white">
+            <Calendar className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+            Próximas Visitas Técnicas en Terreno
+          </h2>
+          <Link 
+            href="/schedule" 
+            className="text-xs font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1 hover:underline"
+          >
+            Ver agenda completa
+            <ArrowRight className="h-3 w-3" />
+          </Link>
+        </div>
+
+        {pendingVisits.length === 0 ? (
+          <div className="py-10 text-center border border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50/50 dark:bg-neutral-950/20">
+            <Calendar className="h-8 w-8 text-neutral-300 dark:text-neutral-700 mx-auto mb-2" />
+            <p className="text-xs font-medium text-neutral-500 dark:text-neutral-450">No hay visitas técnicas programadas pendientes.</p>
+            {(user?.role === 'ADMIN' || user?.role === 'SUPERVISOR') && (
+              <Link
+                href="/schedule"
+                className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 dark:text-indigo-450 mt-2 hover:underline"
+              >
+                Agendar una visita
+                <ArrowRight className="h-3 w-3" />
+              </Link>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {pendingVisits.map((visit) => (
+              <div 
+                key={visit.id} 
+                className="p-4.5 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50/20 dark:bg-neutral-950/10 flex flex-col justify-between gap-3.5 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-xs transition-all duration-200"
+              >
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center gap-2">
+                    <span className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded">
+                      {formatDate(visit.visitDate)}
+                    </span>
+                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${
+                      visit.status === 'IN_PROGRESS'
+                        ? 'bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400'
+                        : 'bg-indigo-50 dark:bg-indigo-950/20 text-indigo-650 dark:text-indigo-400'
+                    }`}>
+                      {visit.status === 'IN_PROGRESS' ? 'En Curso' : 'Pendiente'}
+                    </span>
+                  </div>
+                  <h3 className="font-extrabold text-sm text-neutral-850 dark:text-white truncate">
+                    {visit.client.name}
+                  </h3>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 line-clamp-1">
+                    📍 {visit.client.address}
+                  </p>
+                  {(user?.role === 'ADMIN' || user?.role === 'SUPERVISOR') && (
+                    <p className="text-[10px] font-semibold text-neutral-450 dark:text-neutral-500">
+                      Técnico: <span className="text-neutral-600 dark:text-neutral-300">{visit.technician.name}</span>
+                    </p>
+                  )}
+                  {visit.notes && (
+                    <p className="text-[11px] text-neutral-500 dark:text-neutral-450 italic line-clamp-2 mt-1 pl-2 border-l-2 border-neutral-200 dark:border-neutral-700">
+                      "{visit.notes}"
+                    </p>
+                  )}
+                </div>
+                <Link
+                  href={`/inspections/new?clientId=${visit.clientId}&visitId=${visit.id}`}
+                  className="w-full text-center px-4 py-2 bg-indigo-650 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-xs transition-colors block mt-1"
+                >
+                  Comenzar Levantamiento
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Recent Inspections & Clients Section */}

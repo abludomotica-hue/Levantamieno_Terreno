@@ -25,6 +25,7 @@ export async function createInspection(data: InspectionFormData) {
   const inspection = await prisma.inspection.create({
     data: {
       clientId: rest.clientId,
+      visitId: rest.visitId || null,
       technicianId: user.id,
       status: rest.status,
       visitDate: rest.visitDate,
@@ -66,6 +67,15 @@ export async function createInspection(data: InspectionFormData) {
       },
     },
   })
+
+  if (rest.visitId) {
+    const visitStatus = rest.status === 'COMPLETED' ? 'COMPLETED' : 'IN_PROGRESS'
+    await prisma.scheduleVisit.update({
+      where: { id: rest.visitId },
+      data: { status: visitStatus },
+    })
+    revalidatePath('/schedule')
+  }
 
   revalidatePath('/inspections')
   revalidatePath('/dashboard')
@@ -139,6 +149,20 @@ export async function updateInspection(id: string, data: InspectionFormData) {
       },
     }),
   ])
+
+  const updatedInspection = await prisma.inspection.findUnique({
+    where: { id },
+    select: { visitId: true },
+  })
+
+  if (updatedInspection?.visitId) {
+    const visitStatus = rest.status === 'COMPLETED' ? 'COMPLETED' : 'IN_PROGRESS'
+    await prisma.scheduleVisit.update({
+      where: { id: updatedInspection.visitId },
+      data: { status: visitStatus },
+    })
+    revalidatePath('/schedule')
+  }
 
   revalidatePath('/inspections')
   revalidatePath(`/inspections/${id}`)

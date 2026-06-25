@@ -23,7 +23,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  inspections Inspection[] @relation("TechnicianInspections")
+  inspections    Inspection[]    @relation("TechnicianInspections")
+  scheduleVisits ScheduleVisit[] @relation("TechnicianVisits")
 }
 
 // ============================================================================
@@ -39,7 +40,8 @@ model Client {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  inspections Inspection[]
+  inspections    Inspection[]
+  scheduleVisits ScheduleVisit[]
 }
 
 // ============================================================================
@@ -124,6 +126,9 @@ model Inspection {
   signature Signature[]
   reports   GeneratedReport[]
 
+  visitId String?        @unique
+  visit   ScheduleVisit? @relation(fields: [visitId], references: [id], onDelete: SetNull)
+
   @@index([clientId])
   @@index([technicianId])
   @@index([status])
@@ -188,3 +193,27 @@ model GeneratedReport {
 
   @@index([inspectionId])
 }
+
+// ============================================================================
+// ScheduleVisit - Visitas programadas para inspección
+// ============================================================================
+model ScheduleVisit {
+  id           String   @id @default(uuid())
+  clientId     String
+  technicianId String
+  visitDate    DateTime
+  status       String   @default("PENDING") // PENDING | IN_PROGRESS | COMPLETED | CANCELLED
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  client     Client      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  technician User        @relation("TechnicianVisits", fields: [technicianId], references: [id], onDelete: Cascade)
+  inspection Inspection?
+
+  @@index([clientId])
+  @@index([technicianId])
+  @@index([status])
+  @@index([visitDate])
+}
+
