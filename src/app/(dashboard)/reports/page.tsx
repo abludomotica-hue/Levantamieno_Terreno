@@ -89,10 +89,6 @@ export default async function ReportsPage() {
                   </Link>
                   <Link
                     href={`/inspections/${insp.id}`}
-                    onClick={(e) => {
-                      // Trigger print directly if we can
-                      // Standard behavior is navigate first, but we can instruct the user
-                    }}
                     className="flex items-center justify-center gap-1.5 px-3.5 py-2 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 rounded-xl text-xs font-semibold border border-blue-100/10 transition-colors"
                   >
                     <Printer className="h-4 w-4" />

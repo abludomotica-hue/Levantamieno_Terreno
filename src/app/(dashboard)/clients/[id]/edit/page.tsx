@@ -17,5 +17,12 @@ export default async function EditClientPage(props: {
     notFound()
   }
 
-  return <EditClientForm client={client} />
+  // Serialize dates to prevent Next.js Client Component serialization errors
+  const serializedClient = {
+    ...client,
+    createdAt: client.createdAt.toISOString(),
+    updatedAt: client.updatedAt.toISOString(),
+  }
+
+  return <EditClientForm client={serializedClient as any} />
 }

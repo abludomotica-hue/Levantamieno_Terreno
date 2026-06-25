@@ -1,10 +1,10 @@
 import prisma from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import PrintButton from './print-button'
 import { 
   ArrowLeft, 
   Edit2, 
-  Printer, 
   MapPin, 
   Calendar, 
   User, 
@@ -100,13 +100,7 @@ export default async function InspectionDetailPage(props: {
         
         <div className="flex gap-2">
           {/* Print button */}
-          <button
-            onClick={() => window.print()}
-            className="flex items-center justify-center gap-2 px-4.5 py-2.5 border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl text-xs font-semibold text-neutral-800 dark:text-neutral-200 cursor-pointer transition-all duration-200"
-          >
-            <Printer className="h-4.5 w-4.5" />
-            Imprimir Informe
-          </button>
+          <PrintButton />
           
           {/* Edit button */}
           <Link

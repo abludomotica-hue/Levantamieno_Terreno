@@ -8,5 +8,12 @@ export default async function NewInspectionPage() {
     orderBy: { name: 'asc' },
   })
 
-  return <NewInspectionForm clients={clients} />
+  // Serialize dates to prevent Next.js Client Component serialization errors
+  const serializedClients = clients.map((c) => ({
+    ...c,
+    createdAt: c.createdAt.toISOString(),
+    updatedAt: c.updatedAt.toISOString(),
+  }))
+
+  return <NewInspectionForm clients={serializedClients as any} />
 }

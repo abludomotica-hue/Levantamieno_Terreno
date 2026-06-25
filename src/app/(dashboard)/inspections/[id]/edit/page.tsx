@@ -32,9 +32,12 @@ export default async function EditInspectionPage(props: {
     notFound()
   }
 
-  // Parse JSON strings into arrays for react-hook-form
+  // Parse JSON strings into arrays for react-hook-form and serialize dates
   const parsedInspection = {
     ...inspection,
+    visitDate: inspection.visitDate.toISOString(),
+    createdAt: inspection.createdAt.toISOString(),
+    updatedAt: inspection.updatedAt.toISOString(),
     customerObjectives: parseJsonArray(inspection.customerObjectives),
     recordingType: parseJsonArray(inspection.recordingType),
     remoteAccessPlatforms: parseJsonArray(inspection.remoteAccessPlatforms),
@@ -43,5 +46,11 @@ export default async function EditInspectionPage(props: {
     risksDetected: parseJsonArray(inspection.risksDetected),
   }
 
-  return <EditInspectionForm inspection={parsedInspection as any} clients={clients} />
+  const serializedClients = clients.map((c) => ({
+    ...c,
+    createdAt: c.createdAt.toISOString(),
+    updatedAt: c.updatedAt.toISOString(),
+  }))
+
+  return <EditInspectionForm inspection={parsedInspection as any} clients={serializedClients as any} />
 }
