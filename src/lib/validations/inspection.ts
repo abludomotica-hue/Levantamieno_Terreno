@@ -1,5 +1,10 @@
 import { z } from 'zod'
 
+const optionalNumber = z.preprocess(
+  (val) => (val === '' || (typeof val === 'number' && Number.isNaN(val)) ? null : val),
+  z.number().nonnegative('Debe ser un número positivo').optional().nullable()
+)
+
 export const inspectionSchema = z.object({
   clientId: z.string().min(1, 'El cliente es requerido'),
   visitId: z.string().optional().nullable(),
@@ -30,12 +35,12 @@ export const inspectionSchema = z.object({
   electricNeedsConduit: z.boolean(),
   
   // Distancias (metros)
-  distanceNvrRouter: z.number().nonnegative('Debe ser un número positivo').optional().nullable(),
-  distanceCamera1: z.number().nonnegative('Debe ser un número positivo').optional().nullable(),
-  distanceCamera2: z.number().nonnegative('Debe ser un número positivo').optional().nullable(),
-  distanceCamera3: z.number().nonnegative('Debe ser un número positivo').optional().nullable(),
-  distanceCamera4: z.number().nonnegative('Debe ser un número positivo').optional().nullable(),
-  distanceTotalCable: z.number().nonnegative('Debe ser un número positivo').optional().nullable(),
+  distanceNvrRouter: optionalNumber,
+  distanceCamera1: optionalNumber,
+  distanceCamera2: optionalNumber,
+  distanceCamera3: optionalNumber,
+  distanceCamera4: optionalNumber,
+  distanceTotalCable: optionalNumber,
   
   // Grabación
   recordingType: z.array(z.string()),
@@ -43,7 +48,10 @@ export const inspectionSchema = z.object({
   
   // Acceso remoto
   remoteAccessPlatforms: z.array(z.string()),
-  remoteAccessUsers: z.number().int().nonnegative().optional().nullable(),
+  remoteAccessUsers: z.preprocess(
+    (val) => (val === '' || (typeof val === 'number' && Number.isNaN(val)) ? null : val),
+    z.number().int().nonnegative().optional().nullable()
+  ),
   
   // Equipamiento adicional
   additionalEquipment: z.array(z.string()),
@@ -72,6 +80,9 @@ export const inspectionSchema = z.object({
     position: z.string().min(1, 'La ubicación es requerida'),
     notes: z.string().optional().nullable(),
   })),
+
+  // Firma
+  signature: z.string().optional().nullable(),
 })
 
 export type InspectionFormData = z.infer<typeof inspectionSchema>

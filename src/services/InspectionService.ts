@@ -6,7 +6,7 @@ export class InspectionService {
    * Crea un nuevo levantamiento técnico en la base de datos.
    */
   static async createInspection(data: InspectionFormData, technicianId: string) {
-    const { cameras, photos, ...rest } = data
+    const { cameras, photos, signature, ...rest } = data
 
     const inspection = await prisma.inspection.create({
       data: {
@@ -58,6 +58,11 @@ export class InspectionService {
             caption: pic.caption || null,
           })),
         },
+        signature: signature ? {
+          create: {
+            dataUrl: signature,
+          }
+        } : undefined,
       },
     })
 
@@ -76,7 +81,7 @@ export class InspectionService {
    * Actualiza un levantamiento técnico existente.
    */
   static async updateInspection(id: string, data: InspectionFormData) {
-    const { cameras, photos, ...rest } = data
+    const { cameras, photos, signature, ...rest } = data
 
     await prisma.$transaction([
       prisma.cameraRequirement.deleteMany({
@@ -133,6 +138,14 @@ export class InspectionService {
               caption: pic.caption || null,
             })),
           },
+          ...(signature ? {
+            signature: {
+              deleteMany: {},
+              create: {
+                dataUrl: signature,
+              }
+            }
+          } : {})
         },
       }),
     ])

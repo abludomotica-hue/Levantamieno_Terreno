@@ -339,11 +339,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
     try {
       // Capture signature if drawn
       if (hasSignature && signatureCanvasRef.current) {
-        const dataUrl = signatureCanvasRef.current.toDataURL()
-        // Here we could extend data to save the signature data url, 
-        // but for simplicity we save the inspection and we will submit the signature in a separate flow if needed.
-        // In our prisma schema, Signature is a separate model.
-        // We will pass the signature canvas data URL during creation in an enhancement if required.
+        data.signature = signatureCanvasRef.current.toDataURL()
       }
 
       await createInspection(data)
