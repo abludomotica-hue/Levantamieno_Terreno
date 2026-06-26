@@ -86,6 +86,13 @@ export async function updateVisitStatus(id: string, status: string) {
     throw new Error('No autorizado')
   }
 
+  const existing = await prisma.scheduleVisit.findUnique({ where: { id } })
+  if (!existing) throw new Error('Visita no encontrada.')
+  
+  if (existing.technicianId !== user.id && user.role !== 'ADMIN' && user.role !== 'SUPERVISOR') {
+    throw new Error('No tienes permisos sobre esta visita.')
+  }
+
   const visit = await prisma.scheduleVisit.update({
     where: { id },
     data: { status },
@@ -104,6 +111,13 @@ export async function deleteVisit(id: string) {
   const user = await getCurrentUser()
   if (!user) {
     throw new Error('No autorizado')
+  }
+
+  const existing = await prisma.scheduleVisit.findUnique({ where: { id } })
+  if (!existing) throw new Error('Visita no encontrada.')
+  
+  if (existing.technicianId !== user.id && user.role !== 'ADMIN' && user.role !== 'SUPERVISOR') {
+    throw new Error('No tienes permisos sobre esta visita.')
   }
 
   await prisma.scheduleVisit.delete({

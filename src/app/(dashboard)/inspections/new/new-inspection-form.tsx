@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { inspectionSchema, InspectionFormData } from '@/lib/validations/inspection'
 import { createInspection } from '@/app/actions/inspections'
 import { toast } from 'sonner'
+import { useDraftStore } from '@/store/draft-store'
 import { 
   ArrowLeft, ArrowRight, Save, Loader2, Plus, Trash2, MapPin, 
   Wifi, Shield, Activity, Video, HardDrive, Smartphone, HardHat, FileText, CheckCircle2 
@@ -52,12 +53,16 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
   const [isDrawing, setIsDrawing] = useState(false)
   const [hasSignature, setHasSignature] = useState(false)
 
+  const { draft, lastSaved, setDraft, clearDraft } = useDraftStore()
+  const hasLoadedDraft = useRef(false)
+
   const {
     register,
     control,
     handleSubmit,
     setValue,
     watch,
+    reset,
     trigger,
     formState: { errors, isSubmitting },
   } = useForm<InspectionFormData>({
@@ -296,6 +301,39 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
     setCurrentStep((prev) => Math.max(prev - 1, 0))
   }
 
+  // Cargar borrador local en el montaje
+  useEffect(() => {
+    if (!hasLoadedDraft.current && draft) {
+      reset({
+        ...draft,
+        clientId: preselectedClientId || draft.clientId || '',
+        visitId: visitId || draft.visitId || null,
+      })
+      hasLoadedDraft.current = true
+    } else {
+      hasLoadedDraft.current = true
+    }
+  }, [draft, reset, preselectedClientId, visitId])
+
+  // Autoguardado con Debounce
+  useEffect(() => {
+    let timer: NodeJS.Timeout
+    const subscription = watch((value) => {
+      if (!hasLoadedDraft.current) return
+      
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        if (value.clientId || value.propertyType) {
+          setDraft(value as Partial<InspectionFormData>)
+        }
+      }, 2000)
+    })
+    return () => {
+      clearTimeout(timer)
+      subscription.unsubscribe()
+    }
+  }, [watch, setDraft])
+
   // Submit Handler
   const onSubmit = async (data: InspectionFormData) => {
     try {
@@ -309,6 +347,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
       }
 
       await createInspection(data)
+      clearDraft()
       toast.success('Levantamiento técnico creado exitosamente')
       router.push('/inspections')
       router.refresh()
@@ -401,6 +440,29 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
           })}
         </div>
       </div>
+
+      {/* Draft Indicator */}
+      {lastSaved && (
+        <div className="flex items-center justify-between mb-4 bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-lg border border-yellow-200 dark:border-yellow-800/50">
+          <div className="flex items-center text-sm font-medium text-yellow-800 dark:text-yellow-400">
+            <CheckCircle2 className="w-4 h-4 mr-2" />
+            Borrador local guardado a las {new Date(lastSaved).toLocaleTimeString()}
+          </div>
+          <button 
+            type="button"
+            onClick={() => {
+              if(window.confirm('¿Seguro que deseas descartar el borrador local? Perderás todo el progreso no guardado en el servidor.')) {
+                clearDraft()
+                window.location.reload()
+              }
+            }}
+            className="text-xs flex items-center font-semibold text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+          >
+            <Trash2 className="w-3 h-3 mr-1" />
+            Descartar
+          </button>
+        </div>
+      )}
 
       {/* Main Wizard Form Card */}
       <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-xs overflow-hidden">

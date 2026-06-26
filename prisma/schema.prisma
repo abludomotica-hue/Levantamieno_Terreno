@@ -60,7 +60,7 @@ model Inspection {
 
   // --- Sección: Objetivos del cliente ---
   // JSON array: ["seguridad","mascotas","vehiculos","accesos","encomiendas","robos"]
-  customerObjectives String @default("[]")
+  customerObjectives Json @default("[]")
 
   // --- Sección: Tipo de propiedad ---
   propertyType     String @default("casa") // casa | condominio | parcela | comercial
@@ -88,26 +88,26 @@ model Inspection {
 
   // --- Sección: Grabación ---
   // JSON: tipo de grabación seleccionado
-  recordingType    String  @default("[]")
+  recordingType    Json  @default("[]")
   recordingDiskSize String?
 
   // --- Sección: Acceso remoto ---
   // JSON array: plataformas seleccionadas
-  remoteAccessPlatforms String @default("[]")
+  remoteAccessPlatforms Json @default("[]")
   remoteAccessUsers     Int?
 
   // --- Sección: Equipamiento adicional ---
   // JSON array: equipos adicionales requeridos
-  additionalEquipment      String  @default("[]")
+  additionalEquipment      Json  @default("[]")
   additionalEquipmentNotes String?
 
   // --- Sección: Venta cruzada ---
   // JSON array: items de venta cruzada
-  crossSellItems String @default("[]")
+  crossSellItems Json @default("[]")
 
   // --- Sección: Riesgos detectados ---
   // JSON array: riesgos identificados en terreno
-  risksDetected String @default("[]")
+  risksDetected Json @default("[]")
 
   // --- Sección: Observaciones y recomendaciones ---
   observations       String?

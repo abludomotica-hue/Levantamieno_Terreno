@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Toaster } from 'sonner'
 import './globals.css'
@@ -13,9 +13,24 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
+export const viewport: Viewport = {
+  themeColor: '#000000',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+}
+
 export const metadata: Metadata = {
   title: 'Ablu Tech - Plataforma de Levantamiento Técnico',
   description: 'Sistema premium para inspecciones técnicas de terreno y recopilación de datos de seguridad.',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Ablu Tech',
+  },
+  formatDetection: {
+    telephone: false,
+  },
 }
 
 export default function RootLayout({

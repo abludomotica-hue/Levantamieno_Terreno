@@ -34,13 +34,12 @@ import {
 
 export const dynamic = 'force-dynamic'
 
-function parseJsonArray(str: string | null | undefined): string[] {
-  if (!str) return []
-  try {
-    return JSON.parse(str)
-  } catch {
-    return []
+function parseJsonArray(val: any): string[] {
+  if (Array.isArray(val)) return val;
+  if (typeof val === 'string') {
+    try { return JSON.parse(val); } catch { return []; }
   }
+  return [];
 }
 
 export default async function InspectionDetailPage(props: {
