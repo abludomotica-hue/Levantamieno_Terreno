@@ -195,9 +195,9 @@ export default function CatalogClient({ initialProducts, currentUser }: CatalogC
           {isAdminOrSupervisor && (
             <button
               onClick={openCreateModal}
-              className="flex items-center gap-1.5 px-4.5 py-2.5 bg-indigo-650 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer shadow-indigo-600/10"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-600/10 active:scale-95 transition-all duration-200 cursor-pointer"
             >
-              <Plus className="h-4.5 w-4.5" />
+              <Plus className="h-4 w-4" />
               Nuevo Producto
             </button>
           )}
