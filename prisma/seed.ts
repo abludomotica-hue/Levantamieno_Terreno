@@ -2,6 +2,7 @@
 // Prisma Seed - Datos iniciales para Levantamiento Terreno
 // ============================================================================
 
+import "dotenv/config";
 import prisma from "../src/lib/prisma";
 import bcrypt from "bcryptjs";
 

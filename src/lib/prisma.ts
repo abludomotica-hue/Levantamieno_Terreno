@@ -1,21 +1,21 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaNeon } from "@prisma/adapter-neon";
-import { neonConfig } from "@neondatabase/serverless";
-import ws from "ws";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
 const getPrismaClient = () => {
-  // Configurar WebSocket para el driver de Neon en el servidor Node.js
-  if (typeof window === "undefined") {
-    neonConfig.webSocketConstructor = ws;
-  }
-
-  const connectionString = process.env.DATABASE_URL || "";
-  const adapter = new PrismaNeon({ connectionString });
+  const connectionString = `${process.env.DATABASE_URL}`;
   
+  const pool = new Pool({ connectionString });
+  const adapter = new PrismaPg(pool);
+
   return new PrismaClient({
     adapter,
     log:
@@ -25,12 +25,10 @@ const getPrismaClient = () => {
   });
 };
 
-export const prisma =
-  globalForPrisma.prisma ?? getPrismaClient();
+export const prisma = globalForPrisma.prisma ?? getPrismaClient();
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
 }
 
 export default prisma;
-
