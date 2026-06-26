@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { 
   LayoutDashboard, 
@@ -65,13 +66,13 @@ export default function DashboardLayout({
   return (
     <div className="flex h-screen bg-[#fafafa] dark:bg-[#0a0a0a] text-foreground transition-colors duration-200 overflow-hidden">
       {/* Sidebar for Desktop */}
-      <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 transition-all duration-300 print:hidden">
+      <aside className="hidden md:flex flex-col w-64 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl border-r border-neutral-200/50 dark:border-neutral-800/50 transition-all duration-300 print:hidden z-20">
         {/* Header */}
-        <div className="h-16 flex items-center px-6 border-b border-neutral-200 dark:border-neutral-800 gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-white shadow-md shadow-blue-600/20">
-            <ShieldCheck className="h-5.5 w-5.5" />
+        <div className="h-16 flex items-center px-6 border-b border-neutral-200/50 dark:border-neutral-800/50 gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600/10 dark:bg-blue-500/10 overflow-hidden shadow-sm">
+            <Image src="/icon.png" alt="Ablu Tech Logo" width={36} height={36} className="object-cover" />
           </div>
-          <span className="font-bold text-lg bg-gradient-to-r from-neutral-900 to-neutral-600 dark:from-white dark:to-neutral-400 bg-clip-text text-transparent">
+          <span className="font-heading font-bold text-xl bg-gradient-to-r from-neutral-900 to-neutral-600 dark:from-white dark:to-neutral-400 bg-clip-text text-transparent">
             Ablu Tech
           </span>
         </div>
@@ -139,8 +140,10 @@ export default function DashboardLayout({
           </button>
 
           {/* Page Info in topbar for mobile */}
-          <span className="md:hidden font-bold text-base bg-gradient-to-r from-neutral-900 to-neutral-600 dark:from-white dark:to-neutral-400 bg-clip-text text-transparent flex items-center gap-1.5">
-            <ShieldCheck className="h-5 w-5 text-blue-600" />
+          <span className="md:hidden font-heading font-bold text-lg bg-gradient-to-r from-neutral-900 to-neutral-600 dark:from-white dark:to-neutral-400 bg-clip-text text-transparent flex items-center gap-2">
+            <div className="flex h-7 w-7 items-center justify-center rounded bg-blue-600/10 dark:bg-blue-500/10 overflow-hidden">
+              <Image src="/icon.png" alt="Ablu Tech Logo" width={28} height={28} className="object-cover" />
+            </div>
             Ablu Tech
           </span>
 
@@ -195,11 +198,11 @@ export default function DashboardLayout({
           {/* Drawer Content */}
           <div className="relative flex flex-col w-72 max-w-xs bg-white dark:bg-neutral-900 h-full shadow-2xl animate-slide-right transition-transform">
             <div className="h-16 flex items-center justify-between px-6 border-b border-neutral-200 dark:border-neutral-800">
-              <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
-                  <ShieldCheck className="h-5 w-5" />
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600/10 dark:bg-blue-500/10 overflow-hidden">
+                  <Image src="/icon.png" alt="Ablu Tech Logo" width={32} height={32} className="object-cover" />
                 </div>
-                <span className="font-bold text-base">Ablu Tech</span>
+                <span className="font-heading font-bold text-lg">Ablu Tech</span>
               </div>
               <button
                 onClick={() => setIsSidebarOpen(false)}
