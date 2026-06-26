@@ -91,34 +91,42 @@ export class QuoteService {
 
     const cameraCount = inspection.cameras.length
     if (cameraCount > 0) {
-      const domoCam = findProductBySku('CAM-IP-HIK4M-D')
+      // CAM-001: Cámara IP Domo 2MP WiFi Interior (cámara base)
+      const domoCam = findProductBySku('CAM-001')
       preloadedItems.push({
-        name: domoCam?.name || 'Cámara IP Hikvision 4MP Domo',
-        price: domoCam?.price || 45000,
+        name: domoCam?.name || 'Cámara IP Domo 2MP WiFi Interior',
+        price: domoCam?.price || 39990,
         quantity: cameraCount
       })
 
-      const junctionBox = findProductBySku('ACC-CAJA-ESTAN')
+      // SRV-001: Instalación por cámara
+      const installService = findProductBySku('SRV-001')
       preloadedItems.push({
-        name: junctionBox?.name || 'Caja Estanca de Conexión CCTV',
-        price: junctionBox?.price || 2500,
-        quantity: cameraCount
-      })
-
-      const installService = findProductBySku('SRV-INST-CAM')
-      preloadedItems.push({
-        name: installService?.name || 'Servicio de Instalación y Configuración por Cámara',
+        name: installService?.name || 'Instalación Cámara IP (Precio unitario)',
         price: installService?.price || 25000,
         quantity: cameraCount
       })
+
+      // OTR-002: Soporte universal por cámara
+      const soporte = findProductBySku('OTR-002')
+      if (soporte) {
+        preloadedItems.push({
+          name: soporte.name,
+          price: soporte.price,
+          quantity: cameraCount
+        })
+      }
     }
 
-    if (recordingTypes.includes('nvr') && cameraCount > 0) {
+    // NVR según cantidad de cámaras
+    if ((recordingTypes.includes('nvr') || recordingTypes.includes('local')) && cameraCount > 0) {
       let nvrProduct = null
       if (cameraCount <= 4) {
-        nvrProduct = findProductBySku('NVR-HIK-4CH')
+        nvrProduct = findProductBySku('NVR-001') // NVR 4 Canales 4K con HDD 1TB
+      } else if (cameraCount <= 8) {
+        nvrProduct = findProductBySku('NVR-002') // NVR 8 Canales 4K PoE con HDD 2TB
       } else {
-        nvrProduct = findProductBySku('NVR-HIK-8CH')
+        nvrProduct = findProductBySku('NVR-003') // NVR 16 Canales 4K con HDD 4TB
       }
 
       if (nvrProduct) {
@@ -129,34 +137,55 @@ export class QuoteService {
         })
       }
 
-      let hddProduct = null
-      if (inspection.recordingDiskSize === '1tb') {
-        hddProduct = findProductBySku('HDD-WD-PURP1T')
-      } else {
-        hddProduct = findProductBySku('HDD-WD-PURP2T')
-      }
-
-      if (hddProduct) {
+      // SRV-002: Configuración y puesta en marcha NVR
+      const nvrConfig = findProductBySku('SRV-002')
+      if (nvrConfig) {
         preloadedItems.push({
-          name: hddProduct.name,
-          price: hddProduct.price,
+          name: nvrConfig.name,
+          price: nvrConfig.price,
           quantity: 1
         })
       }
     }
 
+    // Cable UTP Cat6 según distancia total
     const totalCable = inspection.distanceTotalCable || 0
     if (totalCable > 0) {
-      const cableProduct = findProductBySku('CAB-UTP-METER')
+      // NET-004: Cable UTP Cat6 Exterior 305m (Bobina) — calculamos bobinas necesarias
+      const cableProduct = findProductBySku('NET-004')
+      const bobinas = Math.max(1, Math.ceil(totalCable / 305))
       preloadedItems.push({
-        name: cableProduct?.name || 'Bobina de Cable UTP Cat6 (por metro)',
-        price: cableProduct?.price || 450,
-        quantity: Math.ceil(totalCable)
+        name: cableProduct?.name || 'Cable UTP Cat6 Exterior 305m (Bobina)',
+        price: cableProduct?.price || 49990,
+        quantity: bobinas
       })
+
+      // SRV-003: Tendido de cableado por metro
+      const cableTendido = findProductBySku('SRV-003')
+      if (cableTendido) {
+        preloadedItems.push({
+          name: cableTendido.name,
+          price: cableTendido.price,
+          quantity: Math.ceil(totalCable)
+        })
+      }
     }
 
+    // Switch PoE si hay más de 2 cámaras
+    if (cameraCount >= 3) {
+      const switchPoe = findProductBySku('NET-001') // Switch PoE 8 Puertos
+      if (switchPoe) {
+        preloadedItems.push({
+          name: switchPoe.name,
+          price: switchPoe.price,
+          quantity: 1
+        })
+      }
+    }
+
+    // UPS si está en equipamiento adicional
     if (additionalEquipment.includes('ups')) {
-      const upsProduct = findProductBySku('POW-UPS-850')
+      const upsProduct = findProductBySku('PWR-002') // UPS 1000VA para DVR/NVR
       if (upsProduct) {
         preloadedItems.push({
           name: upsProduct.name,
@@ -164,15 +193,6 @@ export class QuoteService {
           quantity: 1
         })
       }
-    }
-
-    if (cameraCount > 0) {
-      const netConfig = findProductBySku('SRV-CONF-RED')
-      preloadedItems.push({
-        name: netConfig?.name || 'Configuración de Red y Visualización Móvil',
-        price: netConfig?.price || 15000,
-        quantity: 1
-      })
     }
 
     return preloadedItems

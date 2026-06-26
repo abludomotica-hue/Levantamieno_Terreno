@@ -66,7 +66,7 @@ export default function NewInspectionForm({ clients }: NewInspectionFormProps) {
     trigger,
     formState: { errors, isSubmitting },
   } = useForm<InspectionFormData>({
-    resolver: zodResolver(inspectionSchema),
+    resolver: zodResolver(inspectionSchema) as any,
     defaultValues: {
       clientId: preselectedClientId,
       visitId: visitId || null,

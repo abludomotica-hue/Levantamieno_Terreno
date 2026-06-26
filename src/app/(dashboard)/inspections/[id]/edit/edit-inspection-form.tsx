@@ -54,7 +54,7 @@ export default function EditInspectionForm({ inspection, clients }: EditInspecti
     trigger,
     formState: { errors, isSubmitting },
   } = useForm<InspectionFormData>({
-    resolver: zodResolver(inspectionSchema),
+    resolver: zodResolver(inspectionSchema) as any,
     defaultValues: {
       clientId: inspection.clientId,
       status: inspection.status,

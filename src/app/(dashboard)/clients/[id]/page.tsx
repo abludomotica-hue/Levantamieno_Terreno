@@ -28,7 +28,10 @@ export default async function ClientDetailPage(props: {
     where: { id },
     include: {
       inspections: {
-        orderBy: { visitDate: 'desc' }
+        orderBy: { visitDate: 'desc' },
+        include: {
+          quote: { select: { totalAmount: true } }
+        }
       }
     }
   })
@@ -181,8 +184,14 @@ export default async function ClientDetailPage(props: {
                       {insp.recommendedSystem && (
                         <span>• Sistema: {insp.recommendedSystem}</span>
                       )}
+                      {insp.quote && (
+                        <span className="flex items-center gap-1 text-teal-600 dark:text-teal-400 font-semibold">
+                          • 💰 Cotizado: ${Math.round(insp.quote.totalAmount * 1.19).toLocaleString('es-CL')} c/IVA
+                        </span>
+                      )}
                     </div>
                   </div>
+
 
                   <Link
                     href={`/inspections/${insp.id}`}

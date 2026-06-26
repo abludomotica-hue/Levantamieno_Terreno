@@ -10,7 +10,9 @@ import {
   TrendingUp,
   MapPin,
   Calendar,
-  UserCheck
+  UserCheck,
+  DollarSign,
+  FileText
 } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 
@@ -29,7 +31,9 @@ export default async function DashboardPage() {
     pendingInspections,
     recentInspections,
     recentClients,
-    pendingVisits
+    pendingVisits,
+    quotesAggregate,
+    totalQuotes
   ] = await Promise.all([
     prisma.client.count(),
     prisma.inspection.count(),
@@ -52,34 +56,52 @@ export default async function DashboardPage() {
       take: 5,
       orderBy: { visitDate: 'asc' },
       include: { client: true, technician: { select: { name: true } } }
-    })
+    }),
+    prisma.quote.aggregate({ _sum: { totalAmount: true } }),
+    prisma.quote.count()
   ])
 
-  // Metric Cards Config
+  const totalMontoNeto = quotesAggregate._sum.totalAmount ?? 0
+  const totalMontoConIva = Math.round(totalMontoNeto * 1.19)
+
+
+  // Metric Cards Config — 6 KPIs
   const stats = [
     {
       label: 'Clientes Registrados',
-      value: totalClients,
+      value: totalClients.toLocaleString('es-CL'),
       icon: Users,
       color: 'text-blue-600 bg-blue-50 dark:bg-blue-950/20 dark:text-blue-400',
     },
     {
       label: 'Total Inspecciones',
-      value: totalInspections,
+      value: totalInspections.toLocaleString('es-CL'),
       icon: ClipboardCheck,
       color: 'text-indigo-600 bg-indigo-50 dark:bg-indigo-950/20 dark:text-indigo-400',
     },
     {
       label: 'Visitas Completadas',
-      value: completedInspections,
+      value: completedInspections.toLocaleString('es-CL'),
       icon: CheckCircle2,
       color: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/20 dark:text-emerald-400',
     },
     {
       label: 'Levantamientos Pendientes',
-      value: pendingInspections,
+      value: pendingInspections.toLocaleString('es-CL'),
       icon: Clock,
       color: 'text-amber-600 bg-amber-50 dark:bg-amber-950/20 dark:text-amber-400',
+    },
+    {
+      label: 'Cotizaciones Generadas',
+      value: totalQuotes.toLocaleString('es-CL'),
+      icon: FileText,
+      color: 'text-violet-600 bg-violet-50 dark:bg-violet-950/20 dark:text-violet-400',
+    },
+    {
+      label: 'Monto Total Cotizado',
+      value: `$${totalMontoConIva.toLocaleString('es-CL')}`,
+      icon: DollarSign,
+      color: 'text-teal-600 bg-teal-50 dark:bg-teal-950/20 dark:text-teal-400',
     },
   ]
 
@@ -114,7 +136,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Grid Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {stats.map((stat, i) => {
           const Icon = stat.icon
           return (
